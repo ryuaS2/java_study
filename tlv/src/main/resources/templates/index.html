@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+	<title>TLV(Tag Length Velue) Parse</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script type="text/javascript" th:inline="javascript">
+		var TLV = {
+			parse : function() {
+				$.ajax({
+					type: "POST",
+					url: "parseTlv",
+					data:$('#frmSend').serialize(),
+					success: function(data){
+					}
+				});
+			
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand">TLV</a>
+		</div>
+		<div class="navbar-collapse collapse">
+		  <ul class="nav navbar-nav">
+		    <li class="active"><a th:href="@{/test}">Home</a></li>
+		  </ul>
+		  <ul class="nav navbar-nav navbar-right">
+		  </ul>
+		</div>
+	</div>
+	<div class="container">
+	<form id="frmSend" name="frmSend" method="post" th:action="@{/parseTlv}" th:object="${data}">
+	    <div class="panel panel-info">
+			<div class="panel-heading">
+				<h4>TLV data Parse</h4>
+			</div>
+			<div class="panel-body">
+	        	<div class="input-group-btn">
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-primary" id="btnSnd" name="btnSnd" onclick="TLV.parse();">Send</button>
+					</span>
+				</div>
+				<br/>
+				<textarea id="reqTlv" name="reqTlv" class="form-control" rows="10" required="required" th:field="*{reqTlv}" th:value="*{reqTlv}"></textarea>
+			</div>
+		</div>
+		<div class="panel panel-warning" id="rtnDiv" style="display: none;">
+			<div class="panel-heading">
+				<h4>Result</h4>
+			</div>
+			<div class="panel-body">
+				<textarea id="rtnCtnt" name="rtnCtnt" class="form-control" rows="10"></textarea>
+			</div>
+		</div>
+	</form>
+    </div>
+</body>
+</html>
