@@ -11,6 +11,9 @@ public class TlvUtil {
 
 	byte[] bytes = HexUtil.convertHexStringToByte(strHex);
 
+	for (int i = 0; i < bytes.length; i++) {
+	    System.out.println("bytes[" + i + "] >>" + bytes[i]);
+	}
 	return null;
     }
 

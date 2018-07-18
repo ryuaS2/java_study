@@ -24,7 +24,7 @@ public class TlvParseController {
     @RequestMapping("/parseTlv")
     public String parseTlvData(@ModelAttribute TlvParseData params, Model model) {
 	System.out.println(params.getReqTlv());
-
+	params = tlvParseService.parseTlv(params);
 	model.addAttribute("data", params);
 
 	System.out.println(params.toString());
