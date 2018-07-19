@@ -63,6 +63,28 @@ public class HexUtil {
 	return sb.toString();
     }
 
+    /**
+     *
+     * @MethodName : arrayByteIndexToHexString
+     * @MethodExplain :
+     * @date : 2018. 7. 19. 오후 5:14:15
+     * @author : 이수정
+     *
+     * @param bytes
+     * @param offset
+     * @param length
+     * @return
+     */
+    public static String arrayByteIndexToHexString(final byte[] bytes, final int offset, final int length) {
+	StringBuilder sb = new StringBuilder();
+	String hexaDecimal;
+	for (int i = 0; i < offset + length; i++) {
+	    hexaDecimal = "0" + Integer.toHexString(0xff & bytes[i]);
+	    sb.append(hexaDecimal.substring(hexaDecimal.length() - 2));
+	}
+	return sb.toString();
+    }
+
     public static String toFormattedHexString(final byte[] aBytes, final int aOffset, final int aLength) {
 	StringBuilder sb = new StringBuilder();
 	sb.append("[");

@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Tlv {
     private String tag;
-    private String length;
+    private int	   length;
     private String value;
 }
