@@ -15,12 +15,33 @@ public class TlvParseController {
     @Autowired
     private TlvParseService tlvParseService;
 
+    /**
+     *
+     * @MethodName : mainForm
+     * @MethodExplain :
+     * @date : 2018. 7. 26. 오후 6:14:24
+     * @author : 이수정
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping("/index")
     public String mainForm(Model model) {
 	model.addAttribute("data", new TlvParseData());
 	return "index";
     }
 
+    /**
+     *
+     * @MethodName : parseTlvData
+     * @MethodExplain :
+     * @date : 2018. 7. 26. 오후 6:14:17
+     * @author : 이수정
+     *
+     * @param params
+     * @param model
+     * @return
+     */
     @RequestMapping("/parseTlv")
     public String parseTlvData(@ModelAttribute TlvParseData params, Model model) {
 	System.out.println(params.getReqTlv());

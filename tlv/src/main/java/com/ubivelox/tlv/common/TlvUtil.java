@@ -1,4 +1,4 @@
-package com.ubivelox.tlv.util;
+package com.ubivelox.tlv.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +63,7 @@ public class TlvUtil {
 	} else { // 원시데이터 처리
 
 	}
+
 	return value;
     }
 
@@ -79,14 +80,14 @@ public class TlvUtil {
      * @return
      */
     private static int getValueLength(byte[] bytes, int idx) {
-	int length = bytes[idx] & 0xff;
-	int numBytes = length & 0x7f;
+	int length = bytes[idx] & 0xFF;
+	int numBytes = length & 0x7F;
 	System.out.println(" *** getValueLength >> " + length);
 
 	if ((numBytes + 1) > 1 && (numBytes + 1) <= 3) { // 2-3Byte 길이계산
 	    length = 0; // 길이 초기화
 	    for (int i = idx + 1; i < idx + 1 + numBytes; i++) {
-		length = length * 0x100 + (bytes[i] & 0xff);
+		length = length * 0x100 + (bytes[i] & 0xFF);
 		System.out.println(i + ") getValueLength >> " + length);
 	    }
 	}
@@ -106,10 +107,10 @@ public class TlvUtil {
      * @return
      */
     private static int getLengthBytes(byte[] bytes, int idx) {
-	int len = bytes[idx] & 0xff;
+	int len = bytes[idx] & 0xFF;
 
 	if ((len & 0x80) == 0x80) { // 128일 경우 1바이트 이상
-	    return 1 + (len & 0x7f);
+	    return 1 + (len & 0x7F);
 	} else { // 128이하일 경우 1바이트 반환
 	    return 1;
 	}

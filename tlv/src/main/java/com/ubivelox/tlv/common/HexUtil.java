@@ -1,4 +1,4 @@
-package com.ubivelox.tlv.util;
+package com.ubivelox.tlv.common;
 
 public class HexUtil {
     private static final char[]	CHARS_TABLES = "0123456789ABCDEF".toCharArray();

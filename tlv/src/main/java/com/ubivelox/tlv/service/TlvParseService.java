@@ -2,8 +2,8 @@ package com.ubivelox.tlv.service;
 
 import org.springframework.stereotype.Service;
 
+import com.ubivelox.tlv.common.TlvUtil;
 import com.ubivelox.tlv.domain.TlvParseData;
-import com.ubivelox.tlv.util.TlvUtil;
 
 @Service
 public class TlvParseService {
