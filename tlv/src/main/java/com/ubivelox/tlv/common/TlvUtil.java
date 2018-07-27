@@ -29,9 +29,9 @@ public class TlvUtil {
 
 	// 2. 길이
 	int lengthBytes = getLengthBytes(bytes, idx + tagBytes);
-	result.setLength(getValueLength(bytes, idx + tagBytes));
-
 	System.out.println(" 2. lengthBytes >> " + lengthBytes);
+
+	result.setLength(getValueLength(bytes, idx + tagBytes, lengthBytes));
 
 	// 3. 값
 	result.setValue(getValue(bytes, idx, tagBytes, result.getTag(), lengthBytes, result.getLength()));
@@ -58,10 +58,11 @@ public class TlvUtil {
 
 	byte[] tagByte = HexUtil.convertHexStringToByte(tag);
 
-	if ((tagByte[0] & 0x20) == 0x20) { // 구성데이터 처리
-
+	// 구성데이터 처리
+	if ((tagByte[0] & ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) == ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) {
+	    System.out.println("CONSTRUCTED DATA OBJECT");
 	} else { // 원시데이터 처리
-
+	    System.out.println("PRIMITIVE DATA OBJECT");
 	}
 
 	return value;
@@ -78,20 +79,19 @@ public class TlvUtil {
      * @param bytes
      * @param idx
      * @return
+     * @throws Exception
      */
-    private static int getValueLength(byte[] bytes, int idx) {
+    private static int getValueLength(byte[] bytes, int idx, int lengthBytes) {
 	int length = bytes[idx] & 0xFF;
-	int numBytes = length & 0x7F;
-	System.out.println(" *** getValueLength >> " + length);
 
-	if ((numBytes + 1) > 1 && (numBytes + 1) <= 3) { // 2-3Byte 길이계산
-	    length = 0; // 길이 초기화
-	    for (int i = idx + 1; i < idx + 1 + numBytes; i++) {
+	if (lengthBytes > 1 && lengthBytes <= 3) {
+	    length = 0;
+	    for (int i = idx + 1; i < idx + lengthBytes; i++) {
 		length = length * 0x100 + (bytes[i] & 0xFF);
 		System.out.println(i + ") getValueLength >> " + length);
 	    }
 	}
-	System.out.println(" ### getValueLength >> " + length);
+
 	return length;
     }
 
@@ -107,13 +107,13 @@ public class TlvUtil {
      * @return
      */
     private static int getLengthBytes(byte[] bytes, int idx) {
-	int len = bytes[idx] & 0xFF;
+	int lenBytes = 1;
 
-	if ((len & 0x80) == 0x80) { // 128일 경우 1바이트 이상
-	    return 1 + (len & 0x7F);
-	} else { // 128이하일 경우 1바이트 반환
-	    return 1;
+	if ((bytes[idx] & ConstantCode.LENGTH.MULTI_BYTE) == ConstantCode.LENGTH.MULTI_BYTE) { // 1바이트이상
+	    lenBytes += bytes[idx] & ConstantCode.LENGTH.SINGLE_BYTE; //
 	}
+
+	return lenBytes;
     }
 
     /**
@@ -145,10 +145,10 @@ public class TlvUtil {
      * @return
      */
     private static int getTagBytes(byte[] bytes, int idx) {
-	if ((bytes[idx] & 0x1F) == 0x1F) { // 31일 경우 태그 2Byte
+	if ((bytes[idx] & ConstantCode.TAG.MULTI_BYTE_TAG) == ConstantCode.TAG.MULTI_BYTE_TAG) {
 	    int len = 2;
 	    for (int i = idx + 1; i < idx + 10; i++) {
-		if ((bytes[i] & 0x80) != 0x80) {
+		if ((bytes[i] & ConstantCode.TAG.MULTI_BYTE_TAG_2) != ConstantCode.TAG.MULTI_BYTE_TAG_2) {
 		    break;
 		}
 		len++;
