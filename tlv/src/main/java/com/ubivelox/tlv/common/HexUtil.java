@@ -78,7 +78,7 @@ public class HexUtil {
     public static String arrayByteIndexToHexString(final byte[] bytes, final int offset, final int length) {
 	StringBuilder sb = new StringBuilder();
 	String hexaDecimal;
-	for (int i = 0; i < offset + length; i++) {
+	for (int i = offset; i < offset + length; i++) {
 	    hexaDecimal = "0" + Integer.toHexString(0xff & bytes[i]);
 	    sb.append(hexaDecimal.substring(hexaDecimal.length() - 2));
 	}
@@ -87,19 +87,10 @@ public class HexUtil {
 
     public static String toFormattedHexString(final byte[] aBytes, final int aOffset, final int aLength) {
 	StringBuilder sb = new StringBuilder();
-	sb.append("[");
-	sb.append(aLength);
-	sb.append("] :");
 	for (int si = aOffset, di = 0; si < aOffset + aLength; si++, di++) {
 	    byte b = aBytes[si];
-	    if (di % 4 == 0) {
-		sb.append("  ");
-	    } else {
-		sb.append(' ');
-	    }
 	    sb.append(CHARS_TABLES[(b & 0xf0) >>> 4]);
 	    sb.append(CHARS_TABLES[(b & 0x0f)]);
-
 	}
 
 	return sb.toString();

@@ -60,12 +60,27 @@
 				<textarea id="reqTlv" name="reqTlv" class="form-control" rows="10" required="required" th:field="*{reqTlv}" th:value="*{reqTlv}"></textarea>
 			</div>
 		</div>
-		<div class="panel panel-warning" id="rtnDiv" style="display: none;">
+		<div class="panel panel-warning" id="rtnDiv">
 			<div class="panel-heading">
 				<h4>Result</h4>
 			</div>
 			<div class="panel-body">
-				<textarea id="rtnCtnt" name="rtnCtnt" class="form-control" rows="10"></textarea>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Tag</th>
+							<th>Length</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="tlv : ${resTlv}">
+							<td th:text="${tlv.tag}"></td>    
+							<td th:text="${tlv.length}"></td>
+							<td th:text="${utlv.value}"></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</form>

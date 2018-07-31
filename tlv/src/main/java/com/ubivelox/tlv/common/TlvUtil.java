@@ -6,35 +6,38 @@ import java.util.List;
 import com.ubivelox.tlv.domain.Tlv;
 
 public class TlvUtil {
+
+    static int stIdx = 0;
+
     public static List<Tlv> parse(String strHex) {
 	List<Tlv> tlvLst = new ArrayList<>();
 
 	byte[] bytes = HexUtil.convertHexStringToByte(strHex);
-
-	for (int i = 0; i < 100; i++) {
-	    if (i == 0) {
-		tlvLst.add(parseResult(bytes, i, bytes.length));
-	    }
+	while (stIdx < bytes.length) {
+	    System.out.println(" ## TlvUtil.parse >> " + stIdx + " bytes.length >> " + bytes.length);
+	    tlvLst.add(parseResult(bytes, stIdx, bytes.length));
 	}
 
 	return tlvLst;
     }
 
     private static Tlv parseResult(byte[] bytes, int idx, int len) {
+
 	Tlv result = new Tlv();
 	// 1. 태그
 	int tagBytes = getTagBytes(bytes, idx); // TAG의 바이트를 가져온다.
-	System.out.println(" 1. tagBytes >> " + tagBytes);
 	result.setTag(createTag(bytes, idx, tagBytes));
 
 	// 2. 길이
 	int lengthBytes = getLengthBytes(bytes, idx + tagBytes);
-	System.out.println(" 2. lengthBytes >> " + lengthBytes);
 
 	result.setLength(getValueLength(bytes, idx + tagBytes, lengthBytes));
 
 	// 3. 값
 	result.setValue(getValue(bytes, idx, tagBytes, result.getTag(), lengthBytes, result.getLength()));
+
+	System.out.println("##### parseResult >>>>> " + result.toString());
+
 	return result;
 
     }
@@ -54,6 +57,8 @@ public class TlvUtil {
      * @return
      */
     private static String getValue(byte[] bytes, int idx, int tagBytes, String tag, int lengthBytes, int valueLength) {
+
+	int vIdx = idx + tagBytes + lengthBytes; // Value 추출을 위한 idx 시작
 	String value = "";
 
 	byte[] tagByte = HexUtil.convertHexStringToByte(tag);
@@ -61,8 +66,12 @@ public class TlvUtil {
 	// 구성데이터 처리
 	if ((tagByte[0] & ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) == ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) {
 	    System.out.println("CONSTRUCTED DATA OBJECT");
+	    value = HexUtil.toFormattedHexString(bytes, vIdx, valueLength);
+	    stIdx = vIdx; // 정적변수 초기화
 	} else { // 원시데이터 처리
 	    System.out.println("PRIMITIVE DATA OBJECT");
+	    value = HexUtil.toFormattedHexString(bytes, vIdx, valueLength);
+	    stIdx = vIdx + valueLength; // 정적변수 초기화
 	}
 
 	return value;
@@ -129,7 +138,7 @@ public class TlvUtil {
      * @return
      */
     private static String createTag(byte[] bytes, int idx, int tagBytes) {
-	String tag = HexUtil.arrayByteIndexToHexString(bytes, idx, tagBytes);
+	String tag = HexUtil.toFormattedHexString(bytes, idx, tagBytes);
 	return tag;
     }
 
