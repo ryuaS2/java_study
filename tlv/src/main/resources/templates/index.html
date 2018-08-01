@@ -20,6 +20,8 @@
 					url: "parseTlv",
 					data:$('#frmSend').serialize(),
 					success: function(data){
+						alert(data);
+						$('#frmSend').append(data);
 					}
 				});
 			}
@@ -35,16 +37,17 @@
 		    <span class="icon-bar"></span>
 		  </button>
 		  <a class="navbar-brand">TLV</a>
+		  
 		</div>
 		<div class="navbar-collapse collapse">
 		  <ul class="nav navbar-nav">
-		    <li class="active"><a th:href="@{/test}">Home</a></li>
+		    <li class="active"><a th:href="@{/index}">Home</a></li>
 		  </ul>
 		  <ul class="nav navbar-nav navbar-right">
 		  </ul>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container" id="divTlv">
 	<form id="frmSend" name="frmSend" method="post" th:action="@{/parseTlv}" th:object="${data}">
 	    <div class="panel panel-info">
 			<div class="panel-heading">
@@ -53,14 +56,17 @@
 			<div class="panel-body">
 	        	<div class="input-group-btn" align="right">
 					<span class="input-group-btn">
+						<input type="submit" id="btnSnd" name="btnSnd" class="btn btn-primary" value="Send" />
+					<!-- 
 						<button type="button" class="btn btn-primary" id="btnSnd" name="btnSnd" onclick="TLV.parse();">Send</button>
+					 -->
 					</span>
 				</div>
 				<br/>
 				<textarea id="reqTlv" name="reqTlv" class="form-control" rows="10" required="required" th:field="*{reqTlv}" th:value="*{reqTlv}"></textarea>
 			</div>
 		</div>
-		<div class="panel panel-warning" id="rtnDiv">
+		<div th:if="*{resCode == '0000'}" class="panel panel-warning" id="rtnDiv">
 			<div class="panel-heading">
 				<h4>Result</h4>
 			</div>
@@ -74,10 +80,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="tlv : ${resTlv}">
+						<tr th:each="tlv : *{resTlv}">
 							<td th:text="${tlv.tag}"></td>    
 							<td th:text="${tlv.length}"></td>
-							<td th:text="${utlv.value}"></td>
+							<td th:text="${tlv.value}"></td>
 						</tr>
 					</tbody>
 				</table>

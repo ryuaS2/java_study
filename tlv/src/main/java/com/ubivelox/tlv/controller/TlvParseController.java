@@ -26,7 +26,7 @@ public class TlvParseController {
      * @return
      */
     @RequestMapping("/index")
-    public String mainForm(Model model) {
+    public String mainForm(@ModelAttribute TlvParseData params, Model model) {
 	model.addAttribute("data", new TlvParseData());
 	return "index";
     }

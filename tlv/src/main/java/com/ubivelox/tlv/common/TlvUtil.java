@@ -9,9 +9,9 @@ public class TlvUtil {
 
     static int stIdx = 0;
 
-    public static List<Tlv> parse(String strHex) {
+    public static List<Tlv> parse(String strHex, int idx) {
 	List<Tlv> tlvLst = new ArrayList<>();
-
+	stIdx = 0;
 	byte[] bytes = HexUtil.convertHexStringToByte(strHex);
 	while (stIdx < bytes.length) {
 	    System.out.println(" ## TlvUtil.parse >> " + stIdx + " bytes.length >> " + bytes.length);
