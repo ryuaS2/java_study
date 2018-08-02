@@ -28,10 +28,12 @@ public class TlvParseService {
 		    params.setResMsg(ConstantCode.RES_MSG.SUCCESS);
 		}
 	    } else {
+		// 16진수 형식 오류
 		params.setResCode(ConstantCode.RES_CODE.FORMAT_ERROR);
 		params.setResMsg(ConstantCode.RES_MSG.FORMAT_ERROR);
 	    }
 	} else {
+	    // 필수 값 오류
 	    params.setResCode(ConstantCode.RES_CODE.REQUIRED_ERROR);
 	    params.setResMsg(ConstantCode.RES_MSG.REQUIRED_ERROR);
 	}

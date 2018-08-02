@@ -1,8 +1,8 @@
 package com.ubivelox.tlv.common;
 
 public class HexUtil {
-    private static final char[]	CHARS_TABLES = "0123456789ABCDEF".toCharArray();
-    static final byte[]		BYTES	     = new byte[128];
+    private static final char[]	HEXA_TABLES = "0123456789ABCDEF".toCharArray();
+    static final byte[]		BYTES	    = new byte[128];
 
     static {
 	for (int i = 0; i < 10; i++) {
@@ -12,16 +12,16 @@ public class HexUtil {
 	}
     }
 
-    public static String toHexString(final byte[] aBytes) {
-	return toHexString(aBytes, 0, aBytes.length);
+    public static String toHexString(final byte[] bytes) {
+	return toHexString(bytes, 0, bytes.length);
     }
 
-    public static String toFormattedHexString(final byte[] aBytes) {
-	return toFormattedHexString(aBytes, 0, aBytes.length);
+    public static String toFormattedHexString(final byte[] bytes) {
+	return toFormattedHexString(bytes, 0, bytes.length);
     }
 
-    public static String toHexString(final byte[] aBytes, final int aLength) {
-	return toHexString(aBytes, 0, aLength);
+    public static String toHexString(final byte[] bytes, final int aLength) {
+	return toHexString(bytes, 0, aLength);
     }
 
     /**
@@ -85,25 +85,25 @@ public class HexUtil {
 	return sb.toString();
     }
 
-    public static String toFormattedHexString(final byte[] aBytes, final int aOffset, final int aLength) {
+    public static String toFormattedHexString(final byte[] bytes, final int aOffset, final int aLength) {
 	StringBuilder sb = new StringBuilder();
 	for (int si = aOffset, di = 0; si < aOffset + aLength; si++, di++) {
-	    byte b = aBytes[si];
-	    sb.append(CHARS_TABLES[(b & 0xf0) >>> 4]);
-	    sb.append(CHARS_TABLES[(b & 0x0f)]);
+	    byte b = bytes[si];
+	    sb.append(HEXA_TABLES[(b & 0xf0) >>> 4]);
+	    sb.append(HEXA_TABLES[(b & 0x0f)]);
 	}
 
 	return sb.toString();
 
     }
 
-    public static String toHexString(final byte[] aBytes, final int aOffset, final int aLength) {
+    public static String toHexString(final byte[] bytes, final int aOffset, final int aLength) {
 	char[] dst = new char[aLength * 2];
 
 	for (int si = aOffset, di = 0; si < aOffset + aLength; si++) {
-	    byte b = aBytes[si];
-	    dst[di++] = CHARS_TABLES[(b & 0xf0) >>> 4];
-	    dst[di++] = CHARS_TABLES[(b & 0x0f)];
+	    byte b = bytes[si];
+	    dst[di++] = HEXA_TABLES[(b & 0xf0) >>> 4];
+	    dst[di++] = HEXA_TABLES[(b & 0x0f)];
 	}
 
 	return new String(dst);

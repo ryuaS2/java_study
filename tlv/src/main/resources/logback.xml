@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+	 <!-- 변수 지정 -->
+    <property name="LOG_DIR" value="/logs" />
+    <property name="LOG_PATH_NAME" value="${LOG_DIR}/tlv.log" />
+	
+	<appender name="CONSOLE_OUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n</Pattern>
+		</encoder>
+		
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
+	</appender>
+
+  	<appender name="DAILY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH_NAME}</file>
+        <!-- 일자별로 로그파일 적용하기 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		    <!-- daily rollover -->
+			<fileNamePattern>${LOG_PATH_NAME}.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<!-- keep 90 days' worth of history -->
+			<maxHistory>90</maxHistory>			
+		</rollingPolicy>
+
+		<encoder>
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+		</encoder> 	    
+  	</appender>
+  	
+	<logger name="tlv" additivity="false">
+	    <level value="DEBUG" />
+		<appender-ref ref="DAILY_FILE"/>
+	</logger>
+
+	
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="CONSOLE_OUT" />
+	</root>
+</configuration>

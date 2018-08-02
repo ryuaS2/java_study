@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidationUtil {
 
-    public static final String HANGUL_REGEX = "[가-힣]+";
+    public static final String HANGUL_REGEX = "^[ㄱ-ㅎ가-힣]*$";
 
     public static final String ALPHA_REGEX  = "^[a-zA-Z]*$";
 
@@ -38,7 +38,7 @@ public class ValidationUtil {
 
     public static final String TEL_REGEX    = "^\\d{2,3}-\\d{3,4}-\\d{4}$";
 
-    public static final String HEXA_REGEX   = "^?([a-f0-9]{6}|[a-f0-9]{3})$";
+    public static final String HEXA_REGEX   = "^[a-fA-F0-9]*$";
 
     public String[]	       EXE_ARRAY    = { ".jsp", ".php", ".asp", ".cgi", ".exe" };
     public String[]	       IMG_ARRAY    = { ".gif", ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
@@ -187,8 +187,8 @@ public class ValidationUtil {
      * @param num
      * @return
      */
-    public static boolean isHexaDec(String num) {
-	return num.matches(HEXA_REGEX);
+    public static boolean isHexaDec(String str) {
+	return str.matches(HEXA_REGEX);
     }
 
     /**

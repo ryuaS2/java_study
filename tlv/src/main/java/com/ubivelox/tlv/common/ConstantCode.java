@@ -22,6 +22,13 @@ package com.ubivelox.tlv.common;
  *          -----------------------------------------------------------------------
  */
 public class ConstantCode {
+    public enum DataObjectType {
+	PRIMITIVE, CONSTRUCTED
+    }
+
+    public enum TagValueType {
+	BINARY, NUMERIC, TEXT, MIXED, DOL, TEMPLATE
+    }
 
     public class TAG {
 	public static final byte APPLICATION_CLASS	= (byte) 0x40;
