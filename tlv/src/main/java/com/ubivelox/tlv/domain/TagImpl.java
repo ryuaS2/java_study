@@ -7,43 +7,47 @@ import com.ubivelox.tlv.common.HexUtil;
 
 public final class TagImpl implements Tag {
 
-    private final String	 id;
+    private final byte[]	 tagBytes;
     public final String		 name;
     private final String	 description;
     private final TagValueType	 tagValueType;
     private final TagClass	 tagClass;
     private final DataObjectType type;
 
-    public TagImpl(final String id, final TagValueType tagValueType, final String name, final String description) {
-	if (id == null) {
+    public TagImpl(final String tag, final TagValueType tagValueType, final String name, final String description) {
+	this(HexUtil.convertHexStringToByte(tag), tagValueType, name, description);
+    }
+
+    public TagImpl(final byte[] tagBytes, final TagValueType tagValueType, final String name,
+	    final String description) {
+	if (tagBytes == null) {
 	    throw new IllegalArgumentException("Param id cannot be null");
 	}
-	if (id.length() == 0) {
+	if (tagBytes.length == 0) {
 	    throw new IllegalArgumentException("Param id cannot be empty");
 	}
 	if (tagValueType == null) {
 	    throw new IllegalArgumentException("Param tagValueType cannot be null");
 	}
-	this.id = id;
+	this.tagBytes = tagBytes;
 	this.name = name;
 	this.description = description;
 	this.tagValueType = tagValueType;
 
 	// Tag Byte Array 변환 후 계산
-	byte[] tagByte = HexUtil.convertHexStringToByte(id);
+	// byte[] tagByte = HexUtil.convertHexStringToByte(id);
 
-	if ((tagByte[0] & ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) == ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) {
+	if ((tagBytes[0] & ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) == ConstantCode.TAG.CONSTRUCTED_DATAOBJECT) {
 	    type = DataObjectType.CONSTRUCTED;
 	} else { // 원시데이터 처리
 	    type = DataObjectType.PRIMITIVE;
 	}
 
-	byte tag = tagByte[0];
-	if ((tag & ConstantCode.TAG.PRIVATE_CLASS) == ConstantCode.TAG.PRIVATE_CLASS) {
+	if ((tagBytes[0] & ConstantCode.TAG.PRIVATE_CLASS) == ConstantCode.TAG.PRIVATE_CLASS) {
 	    tagClass = TagClass.PRIVATE;
-	} else if ((tag & ConstantCode.TAG.CONTEXT_SPECIFIC_CLASS) == ConstantCode.TAG.CONTEXT_SPECIFIC_CLASS) {
+	} else if ((tagBytes[0] & ConstantCode.TAG.CONTEXT_SPECIFIC_CLASS) == ConstantCode.TAG.CONTEXT_SPECIFIC_CLASS) {
 	    tagClass = TagClass.CONTEXT_SPECIFIC;
-	} else if ((tag & ConstantCode.TAG.APPLICATION_CLASS) == ConstantCode.TAG.APPLICATION_CLASS) {
+	} else if ((tagBytes[0] & ConstantCode.TAG.APPLICATION_CLASS) == ConstantCode.TAG.APPLICATION_CLASS) {
 	    tagClass = TagClass.APPLICATION;
 	} else {
 	    tagClass = TagClass.UNIVERSAL;
@@ -81,13 +85,13 @@ public final class TagImpl implements Tag {
     }
 
     @Override
-    public String getTag() {
-	return id;
+    public byte[] getTagByte() {
+	return tagBytes;
     }
 
     @Override
-    public int getNumTagBytes() {
-	return id.length();
+    public int getTagBytes() {
+	return tagBytes.length;
     }
 
 }

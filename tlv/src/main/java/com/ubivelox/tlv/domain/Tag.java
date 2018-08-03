@@ -11,7 +11,7 @@ public interface Tag {
 
     boolean isConstructed();
 
-    String getTag();
+    byte[] getTagByte();
 
     String getName();
 
@@ -23,5 +23,5 @@ public interface Tag {
 
     TagClass getTagClass();
 
-    int getNumTagBytes();
+    int getTagBytes();
 }

@@ -24,9 +24,11 @@ public class TlvUtil {
     private static Tlv parseResult(byte[] bytes, int idx, int len) {
 
 	Tlv result = new Tlv();
+	// result.getTagData()
 	// 1. 태그
 	int tagBytes = getTagBytes(bytes, idx); // TAG의 바이트를 가져온다.
-	result.setTag(createTag(bytes, idx, tagBytes));
+	result = createTag(result, bytes, idx, tagBytes);
+	// result.setTag(createTag(bytes, idx, tagBytes));
 
 	// 2. 길이
 	int lengthBytes = getLengthBytes(bytes, idx + tagBytes);
@@ -40,6 +42,18 @@ public class TlvUtil {
 
 	return result;
 
+    }
+
+    private static Tlv createTag(Tlv result, byte[] bytes, int idx, int tagBytes) {
+	String tag = HexUtil.toFormattedHexString(bytes, idx, tagBytes);
+
+	byte[] tagByte = new byte[tagBytes];
+	System.arraycopy(bytes, idx, tagByte, 0, tagBytes);
+
+	result.setTagByte(tagByte);
+	result.setTag(tag);
+
+	return result;
     }
 
     /**
