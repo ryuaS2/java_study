@@ -13,6 +13,17 @@
 	<title>TLV(Tag Length Velue) Parse</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function(){
+  		//<![CDATA[
+			if([[${data.resCode}]] != "0000"){
+				if(/*[[${data.resMsg}]]*/ != ""){
+					alert(/*[[${data.resMsg}]]*/);
+					$("#reqTlv").focus();
+					return;
+				}
+			}
+		// ]]>
+  		});
 		var TLV = {
 			parse : function() {
 				$.ajax({

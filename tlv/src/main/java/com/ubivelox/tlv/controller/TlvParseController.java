@@ -15,6 +15,9 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.ubivelox.tlv.domain.TlvParseData;
 import com.ubivelox.tlv.service.TlvParseService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class TlvParseController {
 
@@ -22,6 +25,7 @@ public class TlvParseController {
     private TlvParseService tlvParseService;
 
     /**
+     * 메인 화면
      *
      * @MethodName : mainForm
      * @MethodExplain :
@@ -43,6 +47,7 @@ public class TlvParseController {
     }
 
     /**
+     * TLV 파싱
      *
      * @MethodName : parseTlvData
      * @MethodExplain :
@@ -55,12 +60,13 @@ public class TlvParseController {
      */
     @RequestMapping("/parseTlv")
     public String parseTlvData(@ModelAttribute TlvParseData params, RedirectAttributes model) {
-	System.out.println(params.getReqTlv());
+
 	params = tlvParseService.parseTlv(params);
-	// model.addAttribute("data", params);
+
+	log.debug(params.toString());
+
 	model.addFlashAttribute("data", params);
-	System.out.println(params.toString());
+
 	return "redirect:index";
-	// return "index";
     }
 }

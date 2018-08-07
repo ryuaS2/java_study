@@ -10,11 +10,29 @@ import com.ubivelox.tlv.common.ValidationUtil;
 import com.ubivelox.tlv.domain.Tlv;
 import com.ubivelox.tlv.domain.TlvParseData;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class TlvParseService {
 
+    /**
+     * <pre>
+     * 1. Summary :
+     * 2. Details :
+     *
+     * 3. LastModifiedDate :
+     * 4. LastReviewedDate :
+     * 5. History
+     * 		2018. 8. 7. writing comments
+     *
+     * </pre>
+     *
+     * @param params
+     * @return
+     */
     public TlvParseData parseTlv(TlvParseData params) {
-	System.out.println("TlvParseService");
+	log.info("TlvParseService");
 
 	// 필수 값과 16진수 형식인지 체크
 	if (ValidationUtil.isRequired(params.getReqTlv())) {
